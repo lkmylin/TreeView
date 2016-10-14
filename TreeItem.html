@@ -1,0 +1,17 @@
+<div style="display:block;">
+    <span ng-if="$ctrl.HasChildren == true && $ctrl.IsNodeOpen == false">
+        <img src="../Images/plus.png" ng-click="$ctrl.ToggleNode()" />
+        <img src="../Images/folder-closed.gif" ng-click="$ctrl.ToggleNode()" />
+    </span>
+    <span ng-if="$ctrl.HasChildren == true && $ctrl.IsNodeOpen == true">
+        <img src="../Images/minus.png" ng-click="$ctrl.ToggleNode()" />
+        <img src="../Images/folder.gif" ng-click="$ctrl.ToggleNode()" />
+    </span>
+    <span ng-if="$ctrl.HasChildren == false">
+        <img src="../Images/file.gif" />
+    </span>
+    <span>{{$ctrl.Title}}</span>
+    <div ng-if="$ctrl.HasChildren == true" ng-show="$ctrl.IsNodeOpen" style="display:block;margin:0 0 0 10px;">
+        <tree-item ng-repeat="item in $ctrl.Children"></tree-item>
+    </div>
+</div>
