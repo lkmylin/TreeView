@@ -1,0 +1,17 @@
+<div ng-class="Item.HasChildren === false ? 'treeview-block treeview-file' : 'treeview-block treeview-line'">
+    <span ng-if="Item.HasChildren === true && Item.IsNodeOpen === false">
+        <img src="../Images/plus.gif" ng-click="Item.ToggleNode()" class="treeview-icon" />
+        <img src="../Images/folder.gif" ng-click="Item.ToggleNode()" />
+    </span>
+    <span ng-if="Item.HasChildren === true && Item.IsNodeOpen === true">
+        <img src="../Images/minus.gif" ng-click="Item.ToggleNode()" class="treeview-icon" />
+        <img src="../Images/open.gif" ng-click="Item.ToggleNode()" />
+    </span>
+    <span ng-if="Item.HasChildren === false">
+        <img src="../Images/file.gif" />
+    </span>
+    <span>{{Item.Title}}</span>
+    <div ng-if="Item.HasChildren === true" ng-show="Item.IsNodeOpen" class="treeview-block treeview-margin treeview-line">
+        <treeitem item="item" ng-repeat="item in Item.Children"></treeitem>
+    </div>
+</div>
