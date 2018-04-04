@@ -5,19 +5,19 @@
         <meta charset="utf-8" />
         <link rel="stylesheet" type="text/css" href="treeview.css"/>
         <script type="text/javascript" src="angular.min.js"></script>
-        <script type="text/javascript" src="treeview.js"></script>
+        <script type="text/javascript" src="treeview.min.js"></script>
         <script type="text/javascript">
             angular.module("demo", ["treeviewModule"]).controller("demoController", ["$scope", "$http", "treeviewProvider", function ($scope, $http, treeviewProvider) {
                 $scope.Data = {};
                 $http.get("demo.json").then(function (response) {
-                    $scope.Data.Treeview = new treeviewProvider.Treeview(response.data);
+                    $scope.Data.Treeview = treeviewProvider.GetInstance(response.data);
                 });
             }]);
         </script>
     </head>
     <body>
         <div style="float:left;margin:2% 0 0 2%;width:88%;" ng-app="demo" ng-controller="demoController">
-            <treeview items="Data.Treeview.TreeItems"></treeview>
+            <treeview data="Data.Treeview"></treeview>
         </div>
     </body>    
 </html>

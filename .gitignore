@@ -4,3 +4,5 @@
 **/bin
 **/obj
 **/packages
+treeview.js
+treeview.min.js

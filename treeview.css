@@ -8,11 +8,17 @@
     margin: 0 0 0 15px;
 }
 .treeview-file {
-    margin: 0 0 0 14px;
+    padding-left: 14px;
 }
 .treeview-line {
-    background: url(../Images/line.gif) no-repeat -3px 0;
+    background: url(../Images/line.gif) no-repeat -3px 3px;
 }
 .treeview-icon {
     background-color: #FFFFFF;
+}
+.treeview-padding {
+    padding-top: 3px;
+}
+.treeview-pointer {
+    cursor: pointer;
 }

@@ -1,3 +1,11 @@
-<div items="Items" class="treeview-left">
-    <treeitem item="item" ng-repeat="item in Items"></treeitem>
+<div class="treeview-left">
+    <div class="treeview-block">
+        <span>
+            <img ng-src="{{Data.Collapsed ? '../Images/plus.gif' : '../Images/minus.gif'}}" ng-click="Data.ToggleAll()" class="treeview-pointer" />
+        </span>
+        <span>Expand/Collapse All</span>
+    </div>
+    <div class="treeview-block">
+        <treeitem item="item" ng-repeat="item in Data.TreeItems"></treeitem>
+    </div>
 </div>
