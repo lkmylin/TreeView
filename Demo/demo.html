@@ -10,14 +10,20 @@
             angular.module("demo", ["treeviewModule"]).controller("demoController", ["$scope", "$http", "treeviewProvider", function ($scope, $http, treeviewProvider) {
                 $scope.Data = {};
                 $http.get("demo.json").then(function (response) {
-                    $scope.Data.Treeview = treeviewProvider.GetInstance(response.data);
+                    $scope.Data.Treeview = treeviewProvider.GetInstance("TreeView1", response.data);
+                    $scope.Data.Treeview2 = treeviewProvider.GetInstance("TreeView2", response.data);
                 });
             }]);
         </script>
     </head>
     <body>
         <div style="float:left;margin:2% 0 0 2%;width:88%;" ng-app="demo" ng-controller="demoController">
-            <treeview data="Data.Treeview"></treeview>
+            <div style="float:left">
+                <treeview data="Data.Treeview"></treeview>
+            </div>
+            <div style="float:left;margin-left:50px;">
+                <treeview data="Data.Treeview2"></treeview>
+            </div>
         </div>
     </body>    
 </html>
