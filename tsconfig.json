@@ -1,14 +1,12 @@
 {
-    "compilerOptions": {
-        "noImplicitAny": true,
-        "removeComments": false,
-        "preserveConstEnums": false,
-        "sourceMap": false,
-        "typeRoots": [
-            "./node_modules/@types/angularjs"
-        ]
-    },
-    "exclude": [
-       "./node_modules"
-   ]
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "removeComments": false,
+    "preserveConstEnums": false,
+    "sourceMap": false
+  },
+  "files": [
+    "./treeview.ts",
+    "./Test/treeview.test.ts"
+  ]
 }

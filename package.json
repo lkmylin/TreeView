@@ -8,8 +8,8 @@
   "author": "Larry Mylin",
   "license": "ISC",
   "devDependencies": {
-    "@types/angularjs": "^1.5.14-alpha",
     "angular": "^1.6.6",
+    "angular-mocks": "^1.6.7",
     "gulp": "^3.9.1",
     "gulp-changed": "^3.1.0",
     "gulp-chokidar": "0.0.5",
@@ -18,6 +18,10 @@
     "gulp-plumber": "^1.1.0",
     "gulp-typescript": "=2.10.0",
     "gulp-uglify": "^3.0.0",
-    "gulp-util": "^3.0.8"
+    "gulp-util": "^3.0.8",
+    "jasmine": "^2.8.0",
+    "karma": "^1.7.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.4"
   }
 }

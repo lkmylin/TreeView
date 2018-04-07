@@ -1,12 +1,12 @@
-(() => {
+((window: IWindow) => {
 
-  const treeviewModule = angular.module("treeviewModule", []);
+  const treeviewModule = window.angular.module("treeview", []);
 
   treeviewModule.service("treeviewProvider", ["cacheServiceProvider", (cacheServiceProvider: CacheServiceProvider) : TreeviewProvider => {
     return new TreeviewProvider(cacheServiceProvider.GetStateManagerInstance());
   }]);
 
-  treeviewModule.service("cacheServiceProvider", ["$window", ($window: any) : CacheServiceProvider => {
+  treeviewModule.service("cacheServiceProvider", ["$window", ($window: IWindow) : CacheServiceProvider => {
     return new CacheServiceProvider($window);
   }]);
 
@@ -30,7 +30,7 @@
     };
   });
 
-  class TreeviewProvider {
+  class TreeviewProvider implements ITreeviewProvider {
     GetInstance: any;
     constructor(stateManager: StateManager) {
       this.GetInstance = (id: string, treeItems: Array<TreeItem>) => {
@@ -39,7 +39,7 @@
     }
   }
 
-  class Treeview {
+  class Treeview implements ITreeview {
     ID: string;
     TreeItems: Array<TreeItem>;
     Collapsed: boolean;
@@ -77,7 +77,7 @@
     }
   }
 
-  class TreeItem {
+  class TreeItem implements ITreeItem {
     RootScope: Treeview;
     TreeKey: number;
     ParentKey: number;
@@ -113,18 +113,18 @@
     }
   }
 
-  class CacheServiceProvider {
-    GlobalScope: any;
+  class CacheServiceProvider implements ICacheServiceProvider {
+    GlobalScope: IWindow;
     GetStateManagerInstance() : StateManager {
       return new StateManager(this.GlobalScope);
     }
-    constructor(globalScope: any) {
+    constructor(globalScope: IWindow) {
       this.GlobalScope = globalScope;
     }
   }
 
-  class StateManager {
-    GlobalScope: any;
+  class StateManager implements IStateManager {
+    GlobalScope: IWindow;
     CachedProperties: ICachedProperties;
     CurrentState: any;
     GetValue(controlID: string, property: string, defaultValue: any): any {
@@ -136,7 +136,7 @@
       this.CurrentState[controlID][property] = value;
       if (this.GlobalScope.localStorage) this.GlobalScope.localStorage.TreeviewCache = JSON.stringify(this.CurrentState);
     };
-    constructor(globalScope: any) {
+    constructor(globalScope: IWindow) {
       this.GlobalScope = globalScope;
       this.CurrentState = globalScope.localStorage && globalScope.localStorage.TreeviewCache ? JSON.parse(globalScope.localStorage.TreeviewCache) : {};
       this.CachedProperties = {
@@ -146,9 +146,59 @@
     }
   }
 
-  interface ICachedProperties {
-    AllCollapsed: string;
-    ExpandedNodes: string;
-  }
+})(this);
 
-})();
+interface IWindow extends Window {
+  angular: any;
+  localStorage: any;
+  describe(description: string, action: Function) : void;
+  beforeEach(action: Function): void;
+  it(description: string, action: Function): void;
+  expect: any;
+  inject(args: Array<any>): void;
+}
+
+interface ITreeview {
+  ID: string;
+  Collapsed: boolean;
+  TreeItems: Array<ITreeItem>;
+  StateManager: IStateManager;
+  ToggleAll(): void;
+  IsNodeCollapsed(treeKey: number): boolean;
+}
+
+interface ITreeviewProvider {
+  GetInstance(id: string, treeItems: Array<ITreeItemPartial>): ITreeview;
+}
+
+interface ITreeItemPartial {
+  TreeKey: number;
+  ParentKey: number;
+  Title: string;
+}
+
+interface ITreeItem extends ITreeItemPartial {
+  RootScope: ITreeview;
+  Collapsed: boolean;
+  HasChildren: boolean;
+  Children: Array<ITreeItem>;
+  ToggleNode(): void;
+}
+
+interface IStateManager {
+  GlobalScope: IWindow;
+  CachedProperties: ICachedProperties;
+  CurrentState: any;
+  GetValue(controlID: string, property: string, defaultValue: any): any;
+  SetValue(controlID: string, property: string, value: any): void;
+}
+
+interface ICacheServiceProvider {
+  GlobalScope: IWindow;
+  GetStateManagerInstance(): void;
+}
+
+interface ICachedProperties {
+  AllCollapsed: string;
+  ExpandedNodes: string;
+}

@@ -43,6 +43,11 @@ const _httpHandler = function (request, response) {
             response.end(_fs.readFileSync("../node_modules/angular/angular.min.js"));
             break;
         }
+        case "/angular.min.js.map": {
+            response.setHeader("Content-Type", "application/octet-stream");
+            response.end(_fs.readFileSync("../node_modules/angular/angular.min.js.map"));
+            break;
+        }
         case "/demo.json": {
             response.setHeader("Content-Type", "application/json");
             response.end(_fs.readFileSync("./demo.json"));

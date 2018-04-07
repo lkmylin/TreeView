@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Datatable test</title>
+        <title>Treeview Demo</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" type="text/css" href="treeview.css"/>
         <script type="text/javascript" src="angular.min.js"></script>
         <script type="text/javascript" src="treeview.min.js"></script>
         <script type="text/javascript">
-            angular.module("demo", ["treeviewModule"]).controller("demoController", ["$scope", "$http", "treeviewProvider", function ($scope, $http, treeviewProvider) {
+            angular.module("demo", ["treeview"]).controller("demoController", ["$scope", "$http", "treeviewProvider", function ($scope, $http, treeviewProvider) {
                 $scope.Data = {};
                 $http.get("demo.json").then(function (response) {
                     $scope.Data.Treeview = treeviewProvider.GetInstance("TreeView1", response.data);
