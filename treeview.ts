@@ -195,7 +195,7 @@ interface IStateManager {
 
 interface ICacheServiceProvider {
   GlobalScope: IWindow;
-  GetStateManagerInstance(): void;
+  GetStateManagerInstance(): IStateManager;
 }
 
 interface ICachedProperties {
