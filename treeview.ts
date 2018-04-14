@@ -54,14 +54,14 @@
       };
       context.Collapsed = !context.Collapsed;      
       context.StateManager.SetValue(context.ID, context.StateManager.CachedProperties.AllCollapsed, context.Collapsed);
-      context.StateManager.SetValue(context.ID, context.StateManager.CachedProperties.ExpandedNodes, []);
+      context.StateManager.SetValue(context.ID, context.StateManager.CachedProperties.CachedNodes, []);
       toggleChildren(context.TreeItems);
     };
     IsNodeCollapsed(treeKey: number): boolean {
-      const expandedNodes = this.StateManager.GetValue(this.ID, this.StateManager.CachedProperties.ExpandedNodes, []);
+      const expandedNodes = this.StateManager.GetValue(this.ID, this.StateManager.CachedProperties.CachedNodes, []);
       if (expandedNodes.length === 0) return this.Collapsed;
       const filteredExpandedNodes = expandedNodes.filter((tk: number) => tk === treeKey);
-      return filteredExpandedNodes.length === 0;
+      return filteredExpandedNodes.length === 0 ? this.Collapsed : !this.Collapsed;
     };
     constructor (id: string, items : Array<TreeItem>, stateManager: StateManager) {
       const context = this;
@@ -88,12 +88,15 @@
     ToggleNode(): void {
       const context = this;
       context.Collapsed = !context.Collapsed;
-      var expandedNodes = context.RootScope.StateManager.GetValue(context.RootScope.ID, context.RootScope.StateManager.CachedProperties.ExpandedNodes, []);
-      expandedNodes = expandedNodes.filter((tk: number) => tk !== context.TreeKey);
-      if (!context.Collapsed) {
-        expandedNodes[expandedNodes.length] = context.TreeKey;
+      var cachedNodes = context.RootScope.StateManager.GetValue(context.RootScope.ID, context.RootScope.StateManager.CachedProperties.CachedNodes, []);
+      cachedNodes = cachedNodes.filter((tk: number) => tk !== context.TreeKey);
+      if (context.RootScope.Collapsed && !context.Collapsed) {
+        cachedNodes[cachedNodes.length] = context.TreeKey;
       }
-      context.RootScope.StateManager.SetValue(context.RootScope.ID, context.RootScope.StateManager.CachedProperties.ExpandedNodes, expandedNodes);
+      else if (!context.RootScope.Collapsed && context.Collapsed) {
+        cachedNodes[cachedNodes.length] = context.TreeKey;
+      }
+      context.RootScope.StateManager.SetValue(context.RootScope.ID, context.RootScope.StateManager.CachedProperties.CachedNodes, cachedNodes);
     };
     constructor (item: TreeItem, items: Array<TreeItem>, rootScope: Treeview) {
       const context = this;
@@ -141,7 +144,7 @@
       this.CurrentState = globalScope.localStorage && globalScope.localStorage.TreeviewCache ? JSON.parse(globalScope.localStorage.TreeviewCache) : {};
       this.CachedProperties = {
         AllCollapsed: "AllCollapsed",
-        ExpandedNodes: "ExpandedNodes"
+        CachedNodes: "CachedNodes"
       }
     }
   }
@@ -200,5 +203,5 @@ interface ICacheServiceProvider {
 
 interface ICachedProperties {
   AllCollapsed: string;
-  ExpandedNodes: string;
+  CachedNodes: string;
 }

@@ -50,7 +50,7 @@
           GlobalScope: $window,
           CachedProperties: {
             "AllCollapsed": "AllCollapsed",
-            "ExpandedNodes": "ExpandedNodes"
+            "CachedNodes": "CachedNodes"
           },
           CurrentState: {},
           GetValue: (id: string, property: string, defaultValue :any) : any => {
@@ -132,16 +132,22 @@
         window.expect(_getValueCalls.length).toBe(_someItems.length + 1);
       });
 
-      window.it("should open all nodes if Collapsed is false", () => {
+      window.it("should open all nodes if tree is expanded and no nodes cached", () => {
         _givenCachedValues(false, []);
         _givenTreeview();
         window.expect(_treeview.TreeItems[0].Collapsed).toBe(false);
       });
 
-      window.it("should open cached nodes", () => {
-        _givenCachedValues(false, [1]);
+      window.it("should open cached nodes if tree is collapsed", () => {
+        _givenCachedValues(true, [1]);
         _givenTreeview();
         window.expect(_treeview.TreeItems[0].Collapsed).toBe(false);
+      });
+
+      window.it("should close cached nodes if tree is expanded", () => {
+        _givenCachedValues(false, [1]);
+        _givenTreeview();
+        window.expect(_treeview.TreeItems[0].Collapsed).toBe(true);
       });
 
       window.it("should toggle all", () : void => {
@@ -160,7 +166,7 @@
         window.expect(_setValueCalls[0].Property).toBe(_stateManager.CachedProperties.AllCollapsed);
         window.expect(_setValueCalls[0].Value).toBe(false);
         window.expect(_setValueCalls[1].ID).toBe("testID");
-        window.expect(_setValueCalls[1].Property).toBe(_stateManager.CachedProperties.ExpandedNodes);
+        window.expect(_setValueCalls[1].Property).toBe(_stateManager.CachedProperties.CachedNodes);
         window.expect(_setValueCalls[1].Value).toEqual([]);
       });
 
@@ -180,7 +186,7 @@
           _whenToggleNode();
           window.expect(_setValueCalls.length).toBe(1);
           window.expect(_setValueCalls[0].ID).toBe("testID");
-          window.expect(_setValueCalls[0].Property).toBe(_stateManager.CachedProperties.ExpandedNodes);
+          window.expect(_setValueCalls[0].Property).toBe(_stateManager.CachedProperties.CachedNodes);
           window.expect(_setValueCalls[0].Value).toEqual([1]);
         });
 
